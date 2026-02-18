@@ -1,0 +1,15 @@
+[project]
+name = "fetch-service"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "redis",
+    "pydantic",
+    "httpx",
+    "requests",
+    "boto3",
+    "python-multipart",
+    "pydantic-settings"
+]

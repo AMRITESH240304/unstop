@@ -1,0 +1,34 @@
+services:
+  fetch-service:
+    build:
+      context: .
+      dockerfile: src/fetch_service/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./temp_invoices:/app/temp_invoices
+    command: uv run python app.py
+    working_dir: /app/src/fetch_service
+    env_file:
+      - .env
+    networks:
+      - am-network
+
+  ocr-worker:
+    build:
+      context: .
+      dockerfile: src/ocr_worker/Dockerfile
+    volumes:
+      - ./temp_invoices:/app/temp_invoices
+    command: uv run python worker.py
+    working_dir: /app/src/ocr_worker
+    env_file:
+      - .env
+    networks:
+      - am-network
+    depends_on:
+      - fetch-service
+
+networks:
+  am-network:
+    external: true
