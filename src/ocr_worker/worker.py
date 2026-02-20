@@ -7,6 +7,7 @@ import pytesseract
 import logging
 import sys
 from pdf2image import convert_from_path
+from agent.llm_check import process_invoice
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,10 +29,6 @@ if r.ping():
 else:
     print("Failed to connect to Redis.")
 
-def process_invoice(invoice_text:str):
-    pass
-    
-
 while True:
     _, job_data = r.blpop(QUEUE_NAME)
     job = json.loads(job_data)
@@ -46,6 +43,10 @@ while True:
         text = ""
         for image in images:
             text += pytesseract.image_to_string(image) + "\n"
+            
+        validation = process_invoice(text)
+
+        print("Validation Result:", validation)
             
         r.setex("test_key", 30, "it successfully works")
         print(f"Extracted text for {invoice_id}:\n{text[:]}...")
