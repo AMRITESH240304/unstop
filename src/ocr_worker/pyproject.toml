@@ -12,5 +12,6 @@ dependencies = [
     "langchain",
     "langchain-postgres",
     "langchain-google-genai",
-    "langgraph"
+    "langgraph",
+    "psycopg2-binary"
 ]

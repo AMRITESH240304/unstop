@@ -6,6 +6,7 @@ import os
 import pytesseract
 import logging
 import sys
+import psycopg2
 from pdf2image import convert_from_path
 from agent.llm_check import process_invoice
 
@@ -14,6 +15,48 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     stream=sys.stdout,
 )
+
+conn = psycopg2.connect(
+    host=os.getenv("POSTGRES_HOST", "localhost"),
+    port=settings.POSTGRES_PORT,
+    dbname=settings.POSTGRES_DB,
+    user=settings.POSTGRES_USER,
+    password=settings.POSTGRES_PASSWORD
+)
+
+cur = conn.cursor()
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS invoices (
+    id UUID PRIMARY KEY,
+    invoice_number VARCHAR(100),
+    invoice_date DATE,
+    vendor_name VARCHAR(255),
+    subtotal NUMERIC(12,2),
+    tax NUMERIC(12,2),
+    total NUMERIC(12,2),
+    status VARCHAR(50),
+    raw_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+""")
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS invoice_line_items (
+    id UUID PRIMARY KEY,
+    invoice_id UUID REFERENCES invoices(id) ON DELETE CASCADE,
+    description TEXT,
+    quantity NUMERIC(10,2),
+    unit_price NUMERIC(12,2),
+    total NUMERIC(12,2)
+);
+""")
+
+conn.commit()
+cur.close()
+conn.close()
+
+logging.info("Database setup completed successfully.")
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 

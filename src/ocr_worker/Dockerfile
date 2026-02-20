@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtesseract-dev \
     poppler-utils \
     gcc \
+    libpq-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml uv.lock ./
