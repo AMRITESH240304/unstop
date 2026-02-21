@@ -155,7 +155,7 @@ while True:
     finally:
         if os.path.exists(temp_file_path):
             s3_client.delete_object(Bucket=BUKCET_NAME, Key=invoice_id)
-            r.rpush(BRAIN_QUEUE_NAME, new_invoiceID)
+            r.rpush(BRAIN_QUEUE_NAME, json.dumps({"invoice_id": new_invoiceID, "status": "processed"}))
             os.remove(temp_file_path)
             logging.info(f"Removed temp file for {invoice_id}")
             logging.info(f"Deleted {invoice_id} from S3")

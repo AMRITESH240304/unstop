@@ -277,11 +277,17 @@ name = "brain"
 version = "0.1.0"
 source = { virtual = "src/brain" }
 dependencies = [
+    { name = "psycopg2-binary" },
+    { name = "pydantic-settings" },
     { name = "redis" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "redis" }]
+requires-dist = [
+    { name = "psycopg2-binary" },
+    { name = "pydantic-settings" },
+    { name = "redis" },
+]
 
 [[package]]
 name = "certifi"
