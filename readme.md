@@ -6,9 +6,6 @@ invoice → extraction → validation → approvals → payment → audit.
 Designed for **safe, deterministic, and compliant execution** using
 orchestration, guardrails, memory, and audit trails.
 
-## Demo
-🎥 Video: [[Video Link](https://drive.google.com/file/d/1zCB-kB9CpW9ASMU1T02EICiGRqyfYgVC/view?usp=sharing)]
-
 📊 Architecture: [[IMAGE_LINK](https://drive.google.com/file/d/1mGVbKXstmyWUKc1SxHAgv2P-bCJusZxE/view?usp=sharing)]
 
 ## Architecture (high level)
