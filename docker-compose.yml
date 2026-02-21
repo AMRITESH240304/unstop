@@ -29,6 +29,17 @@ services:
     depends_on:
       - fetch-service
 
+  brain:
+    build:
+      context: .
+      dockerfile: src/brain/Dockerfile
+    command: uv run python brain.py
+    working_dir: /app/src/brain
+    env_file:
+      - .env
+    networks:
+      - am-network
+
 networks:
   am-network:
     external: true

@@ -118,6 +118,7 @@ s3 = boto3.client('s3', aws_access_key_id=settings.ACCESS_KEY, aws_secret_access
 QUEUE_NAME = "ocr_queue"
 BUKCET_NAME = "unstop-invoice"
 temps_dir = "temp_invoices"
+BRAIN_QUEUE_NAME = "brain_queue"
 os.makedirs(temps_dir, exist_ok=True)
 
 if r.ping():
@@ -154,7 +155,11 @@ while True:
     finally:
         if os.path.exists(temp_file_path):
             s3_client.delete_object(Bucket=BUKCET_NAME, Key=invoice_id)
+            r.rpush(BRAIN_QUEUE_NAME, new_invoiceID)
             os.remove(temp_file_path)
+            logging.info(f"Removed temp file for {invoice_id}")
+            logging.info(f"Deleted {invoice_id} from S3")
+            logging.info(f"Pushed {new_invoiceID} to brain queue")
             print(f"Removed temp file for {invoice_id}")
 
     print(f"OCR completed for {invoice_id}")
