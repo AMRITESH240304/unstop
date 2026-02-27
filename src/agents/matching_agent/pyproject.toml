@@ -1,0 +1,13 @@
+[project]
+name = "matching-agent"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "redis",
+    "psycopg2-binary",
+    "pydantic-settings",
+    "langchain",
+    "langchain-postgres",
+    "langchain-google-genai",
+    "langgraph"
+]

@@ -6,6 +6,7 @@ requires-python = ">=3.11"
 members = [
     "brain",
     "fetch-service",
+    "matching-agent",
     "ocr-worker",
     "unstop-microservices",
 ]
@@ -998,6 +999,31 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/97/c5/1f47e30553a2db137370108316f0b9ecdfa0c5f79b2cf46581a48182ef22/langsmith-0.7.4.tar.gz", hash = "sha256:7a1fe2604424ba1c19d4a39e16a340610bf8f0c94f9eb2f3a292235bb2ee86b0", size = 1038371, upload-time = "2026-02-18T10:33:11.665Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/97/9f/e2c9bc20894d5a8efef5932f18ba8266a277f3933e953fec3901ce4d51f7/langsmith-0.7.4-py3-none-any.whl", hash = "sha256:1d0590dccc7d8b0b2b39a700a1fb8b775858bf07d3b8b5f3a01b6da22bc12726", size = 325739, upload-time = "2026-02-18T10:33:10.208Z" },
+]
+
+[[package]]
+name = "matching-agent"
+version = "0.1.0"
+source = { virtual = "src/agents/matching_agent" }
+dependencies = [
+    { name = "langchain" },
+    { name = "langchain-google-genai" },
+    { name = "langchain-postgres" },
+    { name = "langgraph" },
+    { name = "psycopg2-binary" },
+    { name = "pydantic-settings" },
+    { name = "redis" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "langchain" },
+    { name = "langchain-google-genai" },
+    { name = "langchain-postgres" },
+    { name = "langgraph" },
+    { name = "psycopg2-binary" },
+    { name = "pydantic-settings" },
+    { name = "redis" },
 ]
 
 [[package]]

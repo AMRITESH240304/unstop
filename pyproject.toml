@@ -29,4 +29,4 @@ fetch = ["requests", "beautifulsoup4"]
 ocr = ["pytesseract", "pillow", "opencv-python"]
 
 [tool.uv.workspace]
-members = ["src/fetch_service", "src/ocr_worker", "src/brain"]
+members = ["src/fetch_service", "src/ocr_worker", "src/brain", "src/agents/matching_agent"]

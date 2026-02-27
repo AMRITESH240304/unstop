@@ -95,6 +95,7 @@ def fetch_invoice_data(invoice_id):
 
 r = redis.Redis(host=REDIS_HOST, port=6379)
 BRAIN_QUEUE_NAME = "brain_queue"
+ESCALATE_QUEUE_NAME = "escalate_queue"
 
 if r.ping():
     logging.info("Connected to Redis successfully!")
@@ -115,9 +116,20 @@ while True:
     if invoice_detail:
         validation_result = validation_check(invoice_detail)
         logging.info(f"Validation result for invoice {invoice_id}: {validation_result}")
-        
         if validation_result["status"] == "valid":
             logging.info(f"Invoice {invoice_id} is valid. PO ID: {validation_result['po_id']}")
+            po_id = validation_result["po_id"]
+            cur.execute("""
+                UPDATE purchase_orders
+                SET status = 'APPROVED'
+                WHERE id = %s
+            """, (po_id,))
+
+            conn.commit()
+
+            logging.info(f"PO {po_id} marked as APPROVED")
+            r.lpush(ESCALATE_QUEUE_NAME, json.dumps(invoice_id))
+            
         else:
             logging.warning(f"Invoice {invoice_id} is invalid.")
     else:

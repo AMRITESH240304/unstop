@@ -40,6 +40,17 @@ services:
     networks:
       - am-network
 
+  agents:
+    build:
+      context: .
+      dockerfile: src/agents/matching_agent/Dockerfile
+    command: uv run python match.py
+    working_dir: /app/src/agents/matching_agent
+    env_file:
+      - .env
+    networks:
+      - am-network
+
 networks:
   am-network:
     external: true
